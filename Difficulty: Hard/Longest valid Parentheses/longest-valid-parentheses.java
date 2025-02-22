@@ -1,61 +1,48 @@
 //{ Driver Code Starts
-//Initial Template for Java
+// Initial Template for Java
 
 import java.io.*;
 import java.util.*;
 
-class GFG{
-    public static void main(String args[])throws IOException
-    {
+class GFG {
+    public static void main(String args[]) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(in.readLine());
-        while(t-- > 0){
+        while (t-- > 0) {
             String S = in.readLine();
-            
+
             Solution ob = new Solution();
             System.out.println(ob.maxLength(S));
+
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
 
 
-//User function Template for Java
 
-class Solution{
-    static int maxLength(String S){
+class Solution {
+    static int maxLength(String s) {
         // code here
-        char[] arr = S.toCharArray();
-        int open =0, close =0;
-        int ans =0;
-        for(int i=0; i<arr.length; i++){
-            if(arr[i] == '('){
-                open++;
+        int res =0;
+        Stack<Integer> st = new Stack<>();
+        st.push(-1);
+        for(int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '('){
+                st.push(i);
             }else{
-                close++;
-            }
-            if(open == close){
-                ans = Math.max(ans, open + close);
-            }else if(close > open){
-                open =0;
-                close =0;
+                if(!st.isEmpty()){
+                    st.pop();
+                }
+                if(!st.isEmpty()){
+                    res = Math.max(res, i - st.peek());
+                }else{
+                    st.push(i);
+                }
             }
         }
-        open =0;
-        close =0;
-        for(int i=arr.length -1; i>=0; i--){
-            if(arr[i] == '('){
-                open++;
-            }else{
-                close++;
-            }
-            if(open == close){
-                ans = Math.max(ans,  open + close);
-            }else if(open > close){
-                open =0;
-                close =0;
-            }
-        }
-        return ans;
+        return res;
     }
 }
