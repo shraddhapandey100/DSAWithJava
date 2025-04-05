@@ -4,10 +4,10 @@ import java.util.*;
 class GFG {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int tc = scanner.nextInt(); // Number of test cases
+        int tc = scanner.nextInt();
         while (tc-- > 0) {
-            int n = scanner.nextInt(); // Number of rows
-            int m = scanner.nextInt(); // Number of columns
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
             char[][] grid = new char[n][m];
 
             // Read the grid input
@@ -17,8 +17,9 @@ class GFG {
                 }
             }
             Solution obj = new Solution();
-            int ans = obj.numIslands(grid);
+            int ans = obj.countIslands(grid);
             System.out.println(ans);
+            System.out.println("~");
         }
         scanner.close();
     }
@@ -26,39 +27,39 @@ class GFG {
 
 // } Driver Code Ends
 
+
 class Solution {
-    public int numIslands(char[][] grid) {
+    static boolean isSafe(char[][] grid, int r , int c, boolean[][] visited){
+        int row = grid.length;
+        int col = grid[0].length;
+        return (r>=0) && (r < row)&& (c>= 0) && (c < col)&& (grid[r][c] == 'L' && !visited[r][c]);
+    }
+    static void dfs(char[][]grid, int r, int c, boolean[][] visited){
+        int[] rNbr = {-1, -1, -1, 0,0, 1,1,1};
+        int[] cNbr = { -1, 0, 1, -1, 1, -1, 0, 1};
+        visited[r][c] = true;
+        for(int k =0; k<8; k++){
+            int newR = r + rNbr[k];
+            int newC = c + cNbr[k];
+            if(isSafe(grid, newR, newC, visited)){
+                dfs(grid, newR, newC, visited);
+            }
+        }
+    }
+    public int countIslands(char[][] grid) {
         // Code here
-        int n=grid.length,m=grid[0].length;
-        int ans=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(grid[i][j]=='1'){
-                    dfs(i,j,grid,n,m);
-                    ans++;
+        int row = grid.length;
+        int col = grid[0].length;
+        boolean[][] visited = new boolean[row][col];
+        int count =0;
+        for(int r =0; r<row; ++r){
+            for(int c =0; c<col; ++c){
+                if(grid[r][c] == 'L' && !visited[r][c]){
+                    dfs(grid, r, c, visited);
+                    ++count;
                 }
             }
         }
-        
-        return ans;
-    }
-    private void dfs(int i,int j,char[][] grid,int n,int m){
-        if(i>=n || i<0 || j>=m || j<0 || grid[i][j]=='0' || grid[i][j]=='2'){
-            return;
-        }
-        
-        grid[i][j]='2';
-        
-        dfs(i+1,j,grid,n,m); // down
-        dfs(i-1,j,grid,n,m); // up
-        dfs(i,j+1,grid,n,m); // right
-        dfs(i,j-1,grid,n,m); // left
-        //diagonals
-        dfs(i-1,j-1,grid,n,m); // up->left
-        dfs(i-1,j+1,grid,n,m); // up->right
-        dfs(i+1,j-1,grid,n,m); // down->left
-        dfs(i+1,j+1,grid,n,m); // down->right
+        return count;
     }
 }
-
-        
