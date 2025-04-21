@@ -1,42 +1,40 @@
 //{ Driver Code Starts
-// Initial Template for Java
-
 import java.io.*;
 import java.util.*;
 
-class GFG {
-
-    public static void main(String[] args) throws IOException {
+class Geeks {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int t = Integer.parseInt(br.readLine().trim());
-        while (t-- > 0) {
-            int n = Integer.parseInt(br.readLine().trim());
-            String[] str = br.readLine().trim().split(" ");
-            int[] arr = new int[n - 1];
-            for (int i = 0; i < n - 1; i++) {
+        int t = Integer.parseInt(br.readLine());
+        for (int g = 0; g < t; g++) {
+            String[] str = (br.readLine()).trim().split(" ");
+            int arr[] = new int[str.length];
+            for (int i = 0; i < str.length; i++) {
                 arr[i] = Integer.parseInt(str[i]);
             }
-            Solution sln = new Solution();
-            System.out.println(sln.missingNumber(n, arr));
+            System.out.println(new Solution().missingNum(arr));
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
 
 
-// User function Template for Java
 class Solution {
-
-    // Note that the size of the array is n-1
-    int missingNumber(int n, int arr[]) {
-
-        // Your Code Here
-        int sum = n*(n+1)/2;
-        int sum1 =0;
-        for(int i=0; i< n-1; i++){
-            sum1+=arr[i];
+    int missingNum(int arr[]) {
+        // code here
+        int n = arr.length +1;
+        int[] hash = new int[n+1];
+        //Store frequencies of elements.
+        for(int i=0; i<n-1; i++){
+            hash[arr[i]]++;
         }
-        return sum- sum1;
+        //Find the missing number.
+        for(int i=1; i<= n; i++){
+            if(hash[i] ==0){
+                return i;
+            }
+        }
+        return -1;
     }
 }
